@@ -54,9 +54,9 @@ public class BarController {
     public ResponseEntity<List<BusiestPeriodResponse>> getManufactureSellsMostPopular(@RequestParam String barName){
         List<String> beerList = billsRepository.getBusiestPeriodOfDayPerWeek(barName);
         List<BusiestPeriodResponse> busiestPeriodResponseList = beerList.stream().map(p->{
-                String arr[] = p.split(",");
+                String []arr = p.split(",");
                 BusiestPeriodResponse busiestPeriodResponse = new BusiestPeriodResponse();
-                if(arr!=null && arr.length >=2)
+                if(arr.length >=2)
                 { busiestPeriodResponse.setTime(arr[0]);
                     busiestPeriodResponse.setDay(arr[1]);
                     busiestPeriodResponse.setRecordCount(arr[2] != null ? Integer.parseInt(arr[2]) : null);

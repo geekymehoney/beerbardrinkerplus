@@ -1,9 +1,9 @@
+-----------------------------------PART-2------------------------------------------
 1) Transactions/bills  cannot be issued  at times when the given bar is closed
 
 SELECT NOT EXISTS(
-SELECT * from Transactions t JOIN Hour h ON
-t.Bar = h.Bar
-WHERE t.Time NOT BETWEEN h.Open AND h.Close
+SELECT * from bills B JOIN operates O ON
+B.Bar = O.Bar WHERE B.time NOT BETWEEN O.start AND O.end)
 
 
 2) Drinkers cannot frequent bars in different state

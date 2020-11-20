@@ -50,9 +50,9 @@ public class DrinkerController {
         List<SpendResponseModel> spendList = new ArrayList<>();
          spendList = spendingStrings.stream().map(i->
          {
-             String arr[] = i.split(",");
+             String []arr = i.split(",");
              SpendResponseModel spendResponseModel = new SpendResponseModel();
-             if(arr!=null && arr.length >=2)
+             if(arr.length >=2)
              { spendResponseModel.setDate(arr[0]);
                spendResponseModel.setDay(arr[1]);
                spendResponseModel.setSum(arr[2] != null ? Double.parseDouble(arr[2]) : null);
