@@ -9,10 +9,10 @@ B.Bar = O.Bar WHERE B.time NOT BETWEEN O.start AND O.end)
 2) Drinkers cannot frequent bars in different state
 
 SELECT NOT EXISTS (
-SELECT DISTINCT f.name, b.bar from Frequents f, Bar b, Drinker d
-WHERE f.name = d.name
-AND f.bar = b.bar
-AND d.State <> b.State);
+SELECT DISTINCT f.drinker, b.name from frequents f,bars b, drinkers d
+WHERE f.drinker = d.name
+AND f.bar = b.name
+AND d.state <> b.state);
 
 
 3) For every two beers, s1 and s2, different bars may charge differently for s1 and s2 but s1 should either be less expensive than s2 in ALL bars or more expensive than s2 in ALL bars.  Cannot be the case that in one bar Corona is more expensive than Bud and in another Bud is more expensive than Corona.  But Corona may be more expensive than Bud in one bar, and have the same price as Bud in another.
