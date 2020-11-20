@@ -1,4 +1,5 @@
 package com.cs366.project.controller;
+import com.cs366.project.model.SpendResponseModel;
 import com.cs366.project.model.Transactions;
 import com.cs366.project.repository.BillsRepository;
 import com.cs366.project.repository.TransactionRepository;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/drinker")
@@ -40,5 +42,23 @@ public class DrinkerController {
             transactionList = transactionRepository.findTransactionsByBill_idIn(billIdList);
         }
         return ResponseEntity.status(HttpStatus.OK).body(transactionList);
+    }
+
+    @GetMapping("/getSpendingPerDayOfWeek")
+    public ResponseEntity<List<SpendResponseModel>> getSpendingPerDayOfWeek(@RequestParam String drinkerName) {
+        List<String> spendingStrings = billsRepository.getSpendingPerDayOfWeek(drinkerName);
+        List<SpendResponseModel> spendList = new ArrayList<>();
+         spendList = spendingStrings.stream().map(i->
+         {
+             String arr[] = i.split(",");
+             SpendResponseModel spendResponseModel = new SpendResponseModel();
+             spendResponseModel.setDate(arr[0]);
+             spendResponseModel.setDay(arr[1]);
+             spendResponseModel.setSum(arr[2] != null ? Double.parseDouble(arr[2]) : null);
+             return spendResponseModel;
+         }
+
+        ).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(spendList);
     }
 }

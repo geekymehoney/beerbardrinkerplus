@@ -1,6 +1,7 @@
 package com.cs366.project.repository;
 
 import com.cs366.project.model.Bills;
+import com.cs366.project.model.SpendResponseModel;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +28,10 @@ public interface BillsRepository extends CrudRepository<Bills, String> {
 
     @Query(value = "SELECT drinker FROM bills WHERE bill_id IN (:list) group by drinker order by count(*) desc",nativeQuery = true)
     List<String> getAllDrinkerOfBiggestConsumers(@Param("list") List<String> list);
+
+    /*
+    c) see a graph with his/her spending in different bars, per days of the week, and month.
+     */
+    @Query(value = "SELECT date, day, sum(total_price) as spending FROM bills where drinker =:name group by day", nativeQuery = true)
+    List<String> getSpendingPerDayOfWeek(@Param("name") String name);
 }
