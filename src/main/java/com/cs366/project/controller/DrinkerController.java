@@ -1,5 +1,4 @@
 package com.cs366.project.controller;
-
 import com.cs366.project.model.Transactions;
 import com.cs366.project.repository.BillsRepository;
 import com.cs366.project.repository.TransactionRepository;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +41,4 @@ public class DrinkerController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(transactionList);
     }
-
-
-
 }
