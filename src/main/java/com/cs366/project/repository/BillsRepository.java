@@ -34,4 +34,10 @@ public interface BillsRepository extends CrudRepository<Bills, String> {
      */
     @Query(value = "SELECT date, day, sum(total_price) as spending FROM bills where drinker =:name group by day", nativeQuery = true)
     List<String> getSpendingPerDayOfWeek(@Param("name") String name);
+
+    /*
+    *
+    * */
+    @Query(value = "SELECT time, day, count(*) as recordCount FROM bills WHERE bar =:bar GROUP BY day ORDER BY recordCount DESC LIMIT 1", nativeQuery = true)
+    List<String> getBusiestPeriodOfDayPerWeek(@Param("bar") String bar);
 }

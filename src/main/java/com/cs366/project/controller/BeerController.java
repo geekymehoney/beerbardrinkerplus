@@ -34,5 +34,12 @@ public class BeerController {
         List<String> drinkerList = billsRepository.getAllDrinkerOfBiggestConsumers(billIdList);
         return ResponseEntity.status(HttpStatus.OK).body(drinkerList);
     }
+
+    @GetMapping("/getBusiestPeriodOfDayPerWeek")
+    public ResponseEntity<List<String>> getBusiestPeriodOfDayPerWeek(@RequestParam String beerName) {
+        List<String> billIdList = transactionRepository.getBillIdlistByBeer(beerName);
+        List<String> drinkerList = billsRepository.getAllDrinkerOfBiggestConsumers(billIdList);
+        return ResponseEntity.status(HttpStatus.OK).body(drinkerList);
+    }
 }
 

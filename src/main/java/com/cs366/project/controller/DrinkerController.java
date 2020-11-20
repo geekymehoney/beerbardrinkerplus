@@ -52,9 +52,11 @@ public class DrinkerController {
          {
              String arr[] = i.split(",");
              SpendResponseModel spendResponseModel = new SpendResponseModel();
-             spendResponseModel.setDate(arr[0]);
-             spendResponseModel.setDay(arr[1]);
-             spendResponseModel.setSum(arr[2] != null ? Double.parseDouble(arr[2]) : null);
+             if(arr!=null && arr.length >=2)
+             { spendResponseModel.setDate(arr[0]);
+               spendResponseModel.setDay(arr[1]);
+               spendResponseModel.setSum(arr[2] != null ? Double.parseDouble(arr[2]) : null);
+             }
              return spendResponseModel;
          }
 

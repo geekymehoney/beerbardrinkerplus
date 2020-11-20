@@ -1,5 +1,7 @@
 package com.cs366.project.controller;
 
+import com.cs366.project.model.BusiestPeriodResponse;
+import com.cs366.project.model.SpendResponseModel;
 import com.cs366.project.model.Transactions;
 import com.cs366.project.repository.BeerRepository;
 import com.cs366.project.repository.BillsRepository;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/bar")
@@ -48,10 +51,19 @@ public class BarController {
     }
 
     @GetMapping("/getManufactureSellsMostPopular")
-    public ResponseEntity<List<String>> getManufactureSellsMostPopular(@RequestParam String barName){
-        List<String> beerList = sellsRepository.getMostPopular(barName);
-        List<String> manufactureList = beerRepository.getManufactureSellsMostPopular(beerList);
-        return ResponseEntity.status(HttpStatus.OK).body(manufactureList);
+    public ResponseEntity<List<BusiestPeriodResponse>> getManufactureSellsMostPopular(@RequestParam String barName){
+        List<String> beerList = billsRepository.getBusiestPeriodOfDayPerWeek(barName);
+        List<BusiestPeriodResponse> busiestPeriodResponseList = beerList.stream().map(p->{
+                String arr[] = p.split(",");
+                BusiestPeriodResponse busiestPeriodResponse = new BusiestPeriodResponse();
+                if(arr!=null && arr.length >=2)
+                { busiestPeriodResponse.setTime(arr[0]);
+                    busiestPeriodResponse.setDay(arr[1]);
+                    busiestPeriodResponse.setRecordCount(arr[2] != null ? Integer.parseInt(arr[2]) : null);
+                }
+                return busiestPeriodResponse;
+            }).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(busiestPeriodResponseList);
     }
 
 }
