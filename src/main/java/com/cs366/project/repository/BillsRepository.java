@@ -26,7 +26,7 @@ public interface BillsRepository extends CrudRepository<Bills, String> {
     @Query(value ="SELECT bar FROM bills WHERE bill_id IN (:list) group by bar order by count(*) desc limit 5", nativeQuery = true)
     List<String> getTop5BarByBeerList(@Param("list") List<String> list);
 
-    @Query(value = "SELECT drinker FROM bills WHERE bill_id IN (:list) group by drinker order by count(*) desc",nativeQuery = true)
+    @Query(value = "SELECT drinker FROM bills WHERE bill_id IN (:list) group by drinker order by count(*) desc limit 10",nativeQuery = true)
     List<String> getAllDrinkerOfBiggestConsumers(@Param("list") List<String> list);
 
     /*
