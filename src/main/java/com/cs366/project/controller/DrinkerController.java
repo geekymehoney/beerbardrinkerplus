@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -101,8 +102,20 @@ public class DrinkerController {
 
 
     @PutMapping("/updateDrinker")
-    public ResponseEntity<String> updateBar(@RequestBody Drinkers drinkers){
+    public ResponseEntity<String> updateBar(@RequestParam String drinkerName, @RequestParam String columnName,
+                                            @RequestParam String columnValue){
+        Optional<Drinkers> drinkersOps = drinkerRepository.findById(drinkerName);
+        if(drinkersOps.isPresent()){
+            Drinkers drinkers = drinkersOps.get();
+        if(columnName.equals("name")){
+            drinkers.setName(columnValue);
+        }else if(columnName.equals("phoneNo")){
+            drinkers.setName(columnValue);
+        }else {
+            drinkers.setState(columnValue);
+        }
         drinkerRepository.save(drinkers);
+        }
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
