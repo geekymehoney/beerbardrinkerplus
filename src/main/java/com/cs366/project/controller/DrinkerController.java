@@ -104,13 +104,13 @@ public class DrinkerController {
     @PutMapping("/updateDrinker")
     public ResponseEntity<String> updateBar(@RequestParam String drinkerName, @RequestParam String columnName,
                                             @RequestParam String columnValue){
-        Optional<Drinkers> drinkersOps = drinkerRepository.findById(drinkerName);
+        Optional<Drinkers> drinkersOps = drinkerRepository.findByName(drinkerName);
         if(drinkersOps.isPresent()){
             Drinkers drinkers = drinkersOps.get();
         if(columnName.equals("name")){
             drinkers.setName(columnValue);
-        }else if(columnName.equals("phoneNo")){
-            drinkers.setName(columnValue);
+        }else if(columnName.equals("phone")){
+            drinkers.setPhone(columnValue);
         }else {
             drinkers.setState(columnValue);
         }
