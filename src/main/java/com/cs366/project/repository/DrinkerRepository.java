@@ -1,10 +1,9 @@
 package com.cs366.project.repository;
 
-import com.cs366.project.model.Bars;
-import com.cs366.project.model.Bills;
+import com.cs366.project.model.Drinkers;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BarRepository extends CrudRepository<Bars, String> {
+public interface DrinkerRepository extends CrudRepository<Drinkers, String> {
 }

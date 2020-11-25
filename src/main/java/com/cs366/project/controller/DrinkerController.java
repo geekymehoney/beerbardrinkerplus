@@ -1,14 +1,14 @@
 package com.cs366.project.controller;
+import com.cs366.project.model.Beers;
+import com.cs366.project.model.Drinkers;
 import com.cs366.project.model.responsemodel.BillsResponse;
 import com.cs366.project.model.responsemodel.SpendResponseModel;
 import com.cs366.project.repository.BillsRepository;
+import com.cs366.project.repository.DrinkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,6 +21,9 @@ public class DrinkerController {
 
     @Autowired
     BillsRepository billsRepository;
+
+    @Autowired
+    DrinkerRepository drinkerRepository;
 
     @GetMapping("/getAllTransactions")
     public ResponseEntity< List<BillsResponse>> getAllTransactions(@RequestParam String drinkerName) {
@@ -94,5 +97,12 @@ public class DrinkerController {
 
         ).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(spendList);
+    }
+
+
+    @PutMapping("/updateDrinker")
+    public ResponseEntity<String> updateBar(@RequestBody Drinkers drinkers){
+        drinkerRepository.save(drinkers);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

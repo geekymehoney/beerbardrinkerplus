@@ -1,4 +1,7 @@
 package com.cs366.project.controller;
+import com.cs366.project.model.Bars;
+import com.cs366.project.model.Beers;
+import com.cs366.project.repository.BeersRepository;
 import com.cs366.project.repository.BillsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,9 @@ public class BeerController {
     @Autowired
     BillsRepository billsRepository;
 
+    @Autowired
+    BeersRepository beersRepository;
+
     @GetMapping("/getTop5BarByBeerList")
     public ResponseEntity<List<String>> getTop5BarByBeerList(@RequestParam String beerName) {
         List<String> barList = billsRepository.getTop5BarByBeerList(beerName);
@@ -27,5 +33,10 @@ public class BeerController {
         return ResponseEntity.status(HttpStatus.OK).body(drinkerList);
     }
 
+    @PutMapping("/updateBeer")
+    public ResponseEntity<String> updateBar(@RequestBody Beers beers){
+        beersRepository.save(beers);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
 
