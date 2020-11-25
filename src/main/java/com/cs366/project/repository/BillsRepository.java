@@ -9,10 +9,10 @@ import java.util.List;
 public interface BillsRepository extends CrudRepository<Bills, Long> {
 
     @Query(value = "SELECT * FROM bills WHERE drinkers =:name GROUP BY bars ORDER BY date, time", nativeQuery = true)
-    List<Bills> getBillsByDrinkerOrderByDateTime(@Param("name")String name);
+    List<String> getBillsByDrinkerOrderByDateTime(@Param("name")String name);
 
     @Query(value = "SELECT * FROM bills where drinkers =:name", nativeQuery = true)
-    List<Bills> getBillIdByDrinker(@Param("name") String name);
+    List<String> getBillIdByDrinker(@Param("name") String name);
 
     @Query(value = "SELECT drinkers FROM bills WHERE bars =:name GROUP BY drinkers ORDER BY SUM(total_price) DESC LIMIT 10", nativeQuery = true)
     List<String> getTopDrinkerByLargestSpenders(@Param("name")String name);

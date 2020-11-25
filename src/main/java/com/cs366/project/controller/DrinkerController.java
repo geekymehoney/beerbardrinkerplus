@@ -21,14 +21,14 @@ public class DrinkerController {
     BillsRepository billsRepository;
 
     @GetMapping("/getAllTransactions")
-    public ResponseEntity<List<Bills>> getAllTransactions(@RequestParam String drinkerName) {
-       List<Bills> billIdList = billsRepository.getBillsByDrinkerOrderByDateTime(drinkerName);
+    public ResponseEntity< List<String>> getAllTransactions(@RequestParam String drinkerName) {
+       List<String> billIdList = billsRepository.getBillsByDrinkerOrderByDateTime(drinkerName);
         return ResponseEntity.status(HttpStatus.OK).body(billIdList);
     }
 
     @GetMapping("/getBeersOrderMost")
-    public ResponseEntity<List<Bills>> getBeersOrderMost(@RequestParam String drinkerName) {
-        List<Bills> billIdList = billsRepository.getBillIdByDrinker(drinkerName);
+    public ResponseEntity< List<String>> getBeersOrderMost(@RequestParam String drinkerName) {
+        List<String> billIdList = billsRepository.getBillIdByDrinker(drinkerName);
         return ResponseEntity.status(HttpStatus.OK).body(billIdList);
     }
 

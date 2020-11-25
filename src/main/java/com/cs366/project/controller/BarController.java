@@ -3,7 +3,6 @@ package com.cs366.project.controller;
 import com.cs366.project.model.Bars;
 import com.cs366.project.model.Beers;
 import com.cs366.project.model.responsemodel.BusiestPeriodResponse;
-import com.cs366.project.repository.BarRepository;
 import com.cs366.project.repository.BillsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +19,7 @@ public class BarController {
     @Autowired
     BillsRepository billsRepository;
 
-    @Autowired
-    BarRepository barRepository;
+
 
     @GetMapping("/getTopDrinkerByLargestSpenders")
     public ResponseEntity<List<String>> getTopDrinkerByLargestSpenders(@RequestParam String barName) {
