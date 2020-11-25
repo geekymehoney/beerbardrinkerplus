@@ -1,13 +1,14 @@
 package com.cs366.project.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "bars")
 public class Bars implements Serializable
 {
     @Id
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
     private String license;
     private String city;

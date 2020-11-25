@@ -1,24 +1,55 @@
 -----------------------------------PART-2------------------------------------------
 1) Transactions/bills  cannot be issued  at times when the given bar is closed
 
-SELECT NOT EXISTS(
-SELECT * from bills B JOIN operates O ON
-B.Bar = O.Bar WHERE B.time NOT BETWEEN O.start AND O.end)
+SELECT
+	CASE WHEN EXISTS
+	(
+		 SELECT NOT EXISTS(
+				SELECT *
+				from bills B JOIN operates O ON B.bar = O.bar
+				WHERE B.time NOT BETWEEN O.start AND O.end)
+    )
+    THEN 'TRUE'
+    ELSE 'FALSE'
+END
 
 
 2) Drinkers cannot frequent bars in different state
 
-SELECT NOT EXISTS (
-SELECT DISTINCT f.name, b.bar from Frequents f, Bar b, Drinker d
-WHERE f.name = d.name
-AND f.bar = b.bar
-AND d.State <> b.State);
+SELECT
+	CASE WHEN EXISTS
+	(
+		SELECT NOT EXISTS (
+		SELECT DISTINCT f.drinker, b.name
+		from frequents f,
+			bars b,
+			drinkers d
+		WHERE f.drinker = d.name
+		AND f.bar = b.name
+		AND d.state <> b.city)
+    )
+    THEN 'TRUE'
+    ELSE 'FALSE'
+END
 
 
-3) For every two beers, s1 and s2, different bars may charge differently for s1 and s2 but s1 should either be less expensive than s2 in ALL bars or more expensive than s2 in ALL bars.  Cannot be the case that in one bar Corona is more expensive than Bud and in another Bud is more expensive than Corona.  But Corona may be more expensive than Bud in one bar, and have the same price as Bud in another.
+3) For every two beers, s1 and s2, different bars may charge differently for s1 and s2 but s1 should either be less expensive than s2 in ALL bars or more expensive than s2 in ALL bars.
+Cannot be the case that in one bar Corona is more expensive than Bud and in another Bud is more expensive than Corona.
+But Corona may be more expensive than Bud in one bar, and have the same price as Bud in another.
 
-SELECT NOT EXISTS(select s1.Name, s2.Name from Sells s1, Sells s2, Sells s3, Sells s4
-WHERE Type = 'beer'
-AND(s1.Bar <> s3.Bar)
-AND(s2.Price > s1.Price AND s3.Bar = s4.Bar)
-AND(s1.Price > s2.Price AND s1.Bar = s2.Bar);
+
+SELECT
+	CASE WHEN EXISTS
+    (
+		SELECT NOT EXISTS(select * from
+		sells s1, sells s2,
+		sells s3, sells s4
+		WHERE (s1.bar <> s3.bar)
+		AND(s3.price < s4.price AND s3.bar = s4.bar)
+		AND(s1.price > s2.price AND s1.bar = s2.bar)
+		AND (s3.beer = s1.beer AND s2.beer = s4.beer)
+		)
+    )
+    THEN 'TRUE'
+    ELSE 'FALSE'
+END

@@ -1,8 +1,7 @@
 package com.cs366.project.controller;
-import com.cs366.project.model.SpendResponseModel;
-import com.cs366.project.model.Transactions;
+import com.cs366.project.model.Bills;
+import com.cs366.project.model.responsemodel.SpendResponseModel;
 import com.cs366.project.repository.BillsRepository;
-import com.cs366.project.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,29 +18,18 @@ import java.util.stream.Collectors;
 public class DrinkerController {
 
     @Autowired
-    TransactionRepository transactionRepository;
-
-    @Autowired
     BillsRepository billsRepository;
 
     @GetMapping("/getAllTransactions")
-    public ResponseEntity<List<Transactions>> getAllTransactions(@RequestParam String drinkerName) {
-       List<String> billIdList = billsRepository.getBillsByDrinkerOrderByDateTime(drinkerName);
-        List<Transactions> transactionList = new ArrayList<>();
-        if(billIdList!=null){
-            transactionList = transactionRepository.findTransactionsByBill_idIn(billIdList);
-       }
-        return ResponseEntity.status(HttpStatus.OK).body(transactionList);
+    public ResponseEntity<List<Bills>> getAllTransactions(@RequestParam String drinkerName) {
+       List<Bills> billIdList = billsRepository.getBillsByDrinkerOrderByDateTime(drinkerName);
+        return ResponseEntity.status(HttpStatus.OK).body(billIdList);
     }
 
     @GetMapping("/getBeersOrderMost")
-    public ResponseEntity<List<Transactions>> getBeersOrderMost(@RequestParam String drinkerName) {
-        List<String> billIdList = billsRepository.getBillIdByDrinker(drinkerName);
-        List<Transactions> transactionList = new ArrayList<>();
-        if(billIdList!=null){
-            transactionList = transactionRepository.findTransactionsByBill_idIn(billIdList);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(transactionList);
+    public ResponseEntity<List<Bills>> getBeersOrderMost(@RequestParam String drinkerName) {
+        List<Bills> billIdList = billsRepository.getBillIdByDrinker(drinkerName);
+        return ResponseEntity.status(HttpStatus.OK).body(billIdList);
     }
 
     @GetMapping("/getSpendingPerDayOfWeek")

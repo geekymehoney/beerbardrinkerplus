@@ -1,24 +1,44 @@
 package com.cs366.project.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.cs366.project.model.compositekey.BillsCompositeKey;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "bills")
 public class Bills implements Serializable {
-@Id
-private String bill_id;
-private String bar;
-private String date;
-private String drinker;
-private double items_price;
-private double tax_price;
-private double tip;
-private double total_price;
-private String time;
-private String bartender;
-private String day;
+
+    @Column(name = "bill_id", nullable = false, insertable = false, updatable = false)
+    private String bill_id;
+
+    @AttributeOverrides(value =
+            {@AttributeOverride(column = @Column(name="beers"), name = "beers"),
+                    @AttributeOverride(column = @Column(name="bill_id"), name = "bill_id"),
+                    @AttributeOverride(column = @Column(name="quantity"), name = "quantity")
+            })
+    @EmbeddedId
+    private BillsCompositeKey billsCompositeKey;
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "bars", referencedColumnName = "name", nullable = false)
+    private Bars bars;
+
+    @MapsId("beers")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "beers", referencedColumnName = "name", nullable = false)
+    private Beers beers;
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "drinkers", referencedColumnName = "name", nullable = false)
+    private Drinkers drinkers;
+    private double total_price;
+    private String time;
+    private String day;
+    private String date;
+
+    @Column(name = "quantity", nullable = false, insertable = false, updatable = false)
+    private int quantity;
 
     public String getBill_id() {
         return bill_id;
@@ -28,52 +48,36 @@ private String day;
         this.bill_id = bill_id;
     }
 
-    public String getBar() {
-        return bar;
+    public BillsCompositeKey getBillsCompositeKey() {
+        return billsCompositeKey;
     }
 
-    public void setBar(String bar) {
-        this.bar = bar;
+    public void setBillsCompositeKey(BillsCompositeKey billsCompositeKey) {
+        this.billsCompositeKey = billsCompositeKey;
     }
 
-    public String getDate() {
-        return date;
+    public Bars getBars() {
+        return bars;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setBars(Bars bars) {
+        this.bars = bars;
     }
 
-    public String getDrinker() {
-        return drinker;
+    public Beers getBeers() {
+        return beers;
     }
 
-    public void setDrinker(String drinker) {
-        this.drinker = drinker;
+    public void setBeers(Beers beers) {
+        this.beers = beers;
     }
 
-    public double getItems_price() {
-        return items_price;
+    public Drinkers getDrinkers() {
+        return drinkers;
     }
 
-    public void setItems_price(double items_price) {
-        this.items_price = items_price;
-    }
-
-    public double getTax_price() {
-        return tax_price;
-    }
-
-    public void setTax_price(double tax_price) {
-        this.tax_price = tax_price;
-    }
-
-    public double getTip() {
-        return tip;
-    }
-
-    public void setTip(double tip) {
-        this.tip = tip;
+    public void setDrinkers(Drinkers drinkers) {
+        this.drinkers = drinkers;
     }
 
     public double getTotal_price() {
@@ -92,19 +96,27 @@ private String day;
         this.time = time;
     }
 
-    public String getBartender() {
-        return bartender;
-    }
-
-    public void setBartender(String bartender) {
-        this.bartender = bartender;
-    }
-
     public String getDay() {
         return day;
     }
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

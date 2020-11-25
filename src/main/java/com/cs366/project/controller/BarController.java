@@ -1,12 +1,7 @@
 package com.cs366.project.controller;
 
-import com.cs366.project.model.BusiestPeriodResponse;
-import com.cs366.project.model.SpendResponseModel;
-import com.cs366.project.model.Transactions;
-import com.cs366.project.repository.BeerRepository;
+import com.cs366.project.model.responsemodel.BusiestPeriodResponse;
 import com.cs366.project.repository.BillsRepository;
-import com.cs366.project.repository.SellsRepository;
-import com.cs366.project.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,24 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/bar")
 public class BarController {
-    @Autowired
-    TransactionRepository transactionRepository;
 
     @Autowired
     BillsRepository billsRepository;
 
-    @Autowired
-    SellsRepository sellsRepository;
-
-    @Autowired
-    BeerRepository beerRepository;
 
     @GetMapping("/getTopDrinkerByLargestSpenders")
     public ResponseEntity<List<String>> getTopDrinkerByLargestSpenders(@RequestParam String barName) {
@@ -42,11 +29,7 @@ public class BarController {
 
     @GetMapping("/getTop10PopularBeer")
     public ResponseEntity<List<String>> getTop10PopularBeer(@RequestParam String barName) {
-        List<String> billIdList = billsRepository.getBillIdByBar(barName);
-        List<String> beerList = new ArrayList<>();
-        if(billIdList!=null){
-            beerList = transactionRepository.getTop10PopularBeer(billIdList);
-        }
+        List<String> beerList = billsRepository.getBillIdByBar(barName);
         return ResponseEntity.status(HttpStatus.OK).body(beerList);
     }
 
@@ -64,6 +47,13 @@ public class BarController {
                 return busiestPeriodResponse;
             }).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(busiestPeriodResponseList);
+    }
+
+
+    @GetMapping("/getBusiestPeriodOfDayPerWeek")
+    public ResponseEntity<List<String>> getBusiestPeriodOfDayPerWeek(@RequestParam String barName) {
+        List<String> drinkerList = billsRepository.getBusiestPeriodOfDayPerWeek(barName);
+        return ResponseEntity.status(HttpStatus.OK).body(drinkerList);
     }
 
 }

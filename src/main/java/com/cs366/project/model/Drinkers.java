@@ -1,11 +1,12 @@
 package com.cs366.project.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 @Entity
-public class Drinker implements Serializable {
+@Table(name = "drinkers")
+public class Drinkers implements Serializable {
     @Id
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
     private String phone;
     private String state;

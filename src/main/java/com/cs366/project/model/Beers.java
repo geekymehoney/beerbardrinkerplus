@@ -1,14 +1,17 @@
 package com.cs366.project.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-public class Beer implements Serializable {
+@Table(name = "beers")
+public class Beers implements Serializable {
+
     @Id
+    @Column(name = "name", nullable = false)
     private String name;
     private String manf;
+    private double price;
 
     public String getName() {
         return name;
@@ -24,5 +27,13 @@ public class Beer implements Serializable {
 
     public void setManf(String manf) {
         this.manf = manf;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

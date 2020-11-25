@@ -1,4 +1,4 @@
-package com.cs366.project.model;
+package com.cs366.project.model.responsemodel;
 
 public class SpendResponseModel {
     String date;
