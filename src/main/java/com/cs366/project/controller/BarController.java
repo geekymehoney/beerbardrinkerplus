@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.json.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,9 +55,16 @@ public class BarController {
         String beer = billsRepository.getMostPopularBeer(barName);
         String manufactor = billsRepository.getMostBeerSellsManufactor(beer);
         String []arr = manufactor.split(",");
-        if(arr.length > 1)
-            return ResponseEntity.status(HttpStatus.OK).body("{ name: "+arr[1]+"}");
-        return ResponseEntity.status(HttpStatus.OK).body("{}");
+        if(arr.length > 1){
+            String ss = "{ name: "+arr[1]+"}";
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(ss);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(jsonObject.toString());}
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @PutMapping("/updateBar")
