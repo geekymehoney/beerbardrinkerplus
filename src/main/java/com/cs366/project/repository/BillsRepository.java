@@ -1,4 +1,5 @@
 package com.cs366.project.repository;
+import com.cs366.project.model.Beers;
 import com.cs366.project.model.Bills;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -36,4 +37,10 @@ public interface BillsRepository extends CrudRepository<Bills, Long> {
     * */
     @Query(value = "SELECT time, day, count(*) as recordCount FROM bills WHERE bars =:bar GROUP BY day ORDER BY recordCount DESC LIMIT 1", nativeQuery = true)
     List<String> getBusiestPeriodOfDayPerWeek(@Param("bar") String bar);
+
+    @Query(value = "SELECT * FROM beers WHERE name =:beer", nativeQuery = true)
+    String getMostBeerSellsManufactor(@Param("beer") String beer);
+
+    @Query(value = "SELECT beers FROM bills WHERE bars =:bar GROUP BY day ORDER BY count(*) DESC LIMIT 1", nativeQuery = true)
+    String getMostPopularBeer(@Param("bar") String bar);
 }
