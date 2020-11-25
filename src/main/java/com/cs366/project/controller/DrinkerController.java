@@ -1,5 +1,5 @@
 package com.cs366.project.controller;
-import com.cs366.project.model.Bills;
+import com.cs366.project.model.responsemodel.BillsResponse;
 import com.cs366.project.model.responsemodel.SpendResponseModel;
 import com.cs366.project.repository.BillsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,15 +23,57 @@ public class DrinkerController {
     BillsRepository billsRepository;
 
     @GetMapping("/getAllTransactions")
-    public ResponseEntity< List<String>> getAllTransactions(@RequestParam String drinkerName) {
+    public ResponseEntity< List<BillsResponse>> getAllTransactions(@RequestParam String drinkerName) {
        List<String> billIdList = billsRepository.getBillsByDrinkerOrderByDateTime(drinkerName);
-        return ResponseEntity.status(HttpStatus.OK).body(billIdList);
+        List<BillsResponse> billsResponseList = new ArrayList<>();
+        billsResponseList = billIdList.stream().map(i->
+                {
+                    String []arr = i.split(",");
+                    BillsResponse billsResponse = new BillsResponse();
+                    if(arr.length >=9)
+                    {
+                        billsResponse.setBeers(arr[0]);
+                        billsResponse.setBill_id(arr[1]);
+                        billsResponse.setQuantity(Integer.parseInt(arr[2]));
+                        billsResponse.setDate(arr[3]);
+                        billsResponse.setDay(arr[4]);
+                        billsResponse.setTime(arr[5]);
+                        billsResponse.setTotal_price(new BigDecimal(arr[6]));
+                        billsResponse.setBars(arr[7]);
+                        billsResponse.setDrinkers(arr[8]);
+                    }
+                    return billsResponse;
+                }
+
+        ).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(billsResponseList);
     }
 
     @GetMapping("/getBeersOrderMost")
-    public ResponseEntity< List<String>> getBeersOrderMost(@RequestParam String drinkerName) {
-        List<String> billIdList = billsRepository.getBillIdByDrinker(drinkerName);
-        return ResponseEntity.status(HttpStatus.OK).body(billIdList);
+    public ResponseEntity< List<BillsResponse>> getBeersOrderMost(@RequestParam String drinkerName) {
+        List<String> billList = billsRepository.getBillIdByDrinker(drinkerName);
+        List<BillsResponse> billsResponseList = new ArrayList<>();
+        billsResponseList = billList.stream().map(i->
+                {
+                    String []arr = i.split(",");
+                    BillsResponse billsResponse = new BillsResponse();
+                    if(arr.length >=9)
+                    {
+                        billsResponse.setBeers(arr[0]);
+                        billsResponse.setBill_id(arr[1]);
+                        billsResponse.setQuantity(Integer.parseInt(arr[2]));
+                        billsResponse.setDate(arr[3]);
+                        billsResponse.setDay(arr[4]);
+                        billsResponse.setTime(arr[5]);
+                        billsResponse.setTotal_price(new BigDecimal(arr[6]));
+                        billsResponse.setBars(arr[7]);
+                        billsResponse.setDrinkers(arr[8]);
+                    }
+                    return billsResponse;
+                }
+
+        ).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(billsResponseList);
     }
 
     @GetMapping("/getSpendingPerDayOfWeek")
