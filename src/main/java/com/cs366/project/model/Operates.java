@@ -12,8 +12,8 @@ public class Operates implements Serializable {
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "bars", referencedColumnName = "name", nullable = false)
     private Bars bars;
-    private Time start;
-    private Time end;
+    private String start;
+    private String end;
     private String day;
 
     public Bars getBars() {
@@ -24,19 +24,19 @@ public class Operates implements Serializable {
         this.bars = bars;
     }
 
-    public Time getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(Time start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public Time getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(Time end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 

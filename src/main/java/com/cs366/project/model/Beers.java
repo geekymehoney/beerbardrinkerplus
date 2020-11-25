@@ -2,6 +2,7 @@ package com.cs366.project.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "beers")
@@ -11,7 +12,7 @@ public class Beers implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
     private String manf;
-    private double price;
+    private BigDecimal price;
 
     public String getName() {
         return name;
@@ -29,11 +30,11 @@ public class Beers implements Serializable {
         this.manf = manf;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

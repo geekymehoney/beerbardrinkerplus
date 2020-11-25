@@ -4,6 +4,7 @@ import com.cs366.project.model.compositekey.SellsCompositeKey;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "sells")
@@ -24,7 +25,7 @@ public class Sells implements Serializable {
             })
     @EmbeddedId
     SellsCompositeKey sellsCompositeKey;
-    private double price;
+    private BigDecimal price;
 
 
     public Bars getBars() {
@@ -43,11 +44,11 @@ public class Sells implements Serializable {
         this.beers = beers;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

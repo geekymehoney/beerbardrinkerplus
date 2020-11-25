@@ -4,6 +4,7 @@ import com.cs366.project.model.compositekey.BillsCompositeKey;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "bills")
@@ -32,7 +33,7 @@ public class Bills implements Serializable {
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "drinkers", referencedColumnName = "name", nullable = false)
     private Drinkers drinkers;
-    private double total_price;
+    private BigDecimal total_price;
     private String time;
     private String day;
     private String date;
@@ -80,11 +81,11 @@ public class Bills implements Serializable {
         this.drinkers = drinkers;
     }
 
-    public double getTotal_price() {
+    public BigDecimal getTotal_price() {
         return total_price;
     }
 
-    public void setTotal_price(double total_price) {
+    public void setTotal_price(BigDecimal total_price) {
         this.total_price = total_price;
     }
 
