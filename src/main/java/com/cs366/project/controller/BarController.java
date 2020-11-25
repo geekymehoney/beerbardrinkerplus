@@ -56,8 +56,8 @@ public class BarController {
         String manufactor = billsRepository.getMostBeerSellsManufactor(beer);
         String []arr = manufactor.split(",");
         if(arr.length > 1)
-            return ResponseEntity.status(HttpStatus.OK).body(arr[1]);
-        return ResponseEntity.status(HttpStatus.OK).body(arr[1]);
+            return ResponseEntity.status(HttpStatus.OK).body("{"+arr[1]+"}");
+        return ResponseEntity.status(HttpStatus.OK).body("{}");
     }
 
     @PutMapping("/updateBar")
