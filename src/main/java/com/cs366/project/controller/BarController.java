@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.json.*;
+
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -70,9 +73,18 @@ public class BarController {
     }
 
     @PutMapping("/updateBar")
-    public ResponseEntity<String> updateBar(@RequestBody Bars bars){
-         barRepository.save(bars);
+    public ResponseEntity<String> updateBeer(@RequestParam String barName, @RequestParam String columnName,
+                                             @RequestParam String columnValue){
+        Optional<Bars> barsOptional = barRepository.findByName(barName);
+        if(barsOptional.isPresent()){
+            Bars bars = barsOptional.get();
+            if(columnName.equals("name")){
+                bars.setName(columnValue);
+            }else if(columnName.equals("city")){
+                bars.setCity(columnValue);
+            }
+            barRepository.save(bars);
+        }
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }
